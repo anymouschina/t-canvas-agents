@@ -1,0 +1,34 @@
+{
+  "name": "ts-perf-runtime",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev:check": "pnpm typecheck",
+    "dev:echo": "tsx src/demo/echo.ts",
+    "dev:tools": "tsx src/demo/tools_router.ts",
+    "dev:shell": "tsx src/demo/shell_tool.ts",
+    "dev:approval": "tsx src/demo/approval_sandbox.ts",
+    "dev:mvp": "tsx src/demo/mvp.ts",
+    "dev:compact": "tsx src/demo/compact.ts",
+    "dev:patch": "tsx src/demo/apply_patch.ts",
+    "dev:replay": "tsx src/demo/replay.ts",
+    "dev:codexlike": "tsx src/demo/codex_like.ts",
+    "dev:parallel": "tsx src/demo/parallel.ts",
+    "dev:stream": "tsx src/demo/streaming.ts",
+    "dev:interrupt": "tsx src/demo/interrupt.ts",
+    "dev:openai": "tsx src/demo/openai.ts",
+    "dev:repl": "tsx src/demo/repl.ts",
+    "dev:web": "tsx src/demo/web.ts",
+    "dev:web:openai": "tsx src/demo/web_openai.ts",
+    "test": "tsx src/tests/run.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "vibe-kanban-web-companion": "^0.0.5"
+  }
+}
