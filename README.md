@@ -1,39 +1,51 @@
-# ts-perf：从零到一实现一个“类 Codex”运行时（文档先行）
+# t-canvas-agents
 
-这个目录是一个学习型工程：我们先写一套文档站点（“书”），再按章节逐步把代码补齐。目标是当你把整本书写完/跑通后，也就实现了一个可工作的最小 Codex（不使用 langgraph 等编排库）。
+本仓库只保留与「agents」相关的内容：用于运行/调试 agent 的最小 TypeScript runtime，以及配套的知识库文档。
 
-约束：
+## 可以用它做什么
 
-- 不使用 langgraph / langchain 之类的 agent 编排库
-- 代码实现与文档章节一一对应
-- 单篇文章引用的代码片段尽量控制在 1000 行以内（因此实现会拆小模块）
+- 跑一个最小 agent loop：在 REPL 里对话、规划（plan）、调用工具（exec/apply_patch 等）
+- 调试工具与沙箱：复现/验证 approvals、sandboxMode（只读/工作区可写等）对文件与命令执行的约束
+- Web 可视化调试：用浏览器实时查看 event 流（tool call、stdout/stderr、approval request 等）
+- 对接 OpenAI 兼容接口：把任意 OpenAI-compatible `Responses API` 接进来跑 demo/REPL
+- 做实现/实验基座：快速加一个新 tool、新 demo task，然后用现有 UI/日志回放验证
 
 ## 目录结构
 
-- `book/`：VitePress 文档站点（书的内容）
-- `runtime/`：TypeScript 实现的 “codex-mini” 运行时（后续逐章补齐）
-- `guide-book/`：VitePress 使用手册站点（面向使用者）
+- `runtime/`：最小 “类 Codex” runtime（REPL、tool routing、sandbox、web 可视化等）
+- `helloagents/`：知识库（SSOT：架构/API/数据/历史记录等）
 
-## 本地运行文档站点（首次）
-
-```bash
-cd ts-perf/book
-pnpm install
-pnpm dev
-```
-
-## 本地运行使用手册（首次）
+## 快速开始（runtime）
 
 ```bash
-cd ts-perf/guide-book
+cd runtime
 pnpm install
-pnpm dev
+pnpm test
+pnpm dev:repl
 ```
 
-## OpenAI 兼容接口（你自己的 Codex 服务）
+常用 demos：
 
-如果你已经有一个 OpenAI 兼容的 `Responses API` 服务（例如 `https://www.right.codes/codex/v1/responses`），建议把鉴权与 base url 放到 `ts-perf/runtime/.env` 里（该文件默认被 `.gitignore` 忽略）。
+```bash
+cd runtime
+pnpm dev:approval   # approvals + sandbox 演示
+pnpm dev:shell      # shell tool 演示
+pnpm dev:patch      # apply_patch 演示
+pnpm dev:stream     # streaming 演示
+pnpm dev:web        # Web UI 调试页
+```
 
-参考模板：`ts-perf/runtime/.env.example`
+## OpenAI 兼容接口（可选）
 
-用 `curl` 快速验证服务可用性：见书中章节 `/guide/17-openai-compatible-api`。
+在 `runtime/.env` 配置（参考 `runtime/.env.example`）：
+
+- `OPENAI_API_KEY=...`
+- `OPENAI_BASE_URL=https://api.openai.com/v1`
+- `OPENAI_MODEL=gpt-5.2`
+
+然后运行：
+
+```bash
+cd runtime
+pnpm dev:openai
+```
